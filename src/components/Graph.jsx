@@ -2,6 +2,7 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 import _ from 'lodash';
 import continents from './points';
+import PointForm from './PointForm';
 
 class Graph extends React.Component {
   constructor (props) {
@@ -30,13 +31,20 @@ class Graph extends React.Component {
 
     this.state = { data };
   }
+
+  handleClick = (event) => {
+    console.log(event);
+  } 
+  
   render() {
     return (
       <div>
         <Plot
           data={this.state.data}
           layout={ {width: 1000, height: 800, title: 'A Fancy Plot'} }
+          onClick={this.handleClick}
         />
+        <PointForm />
       </div>
     )
   }

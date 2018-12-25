@@ -1,0 +1,22 @@
+.point-form {
+  width: 300px;
+  background-color: gray;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  &__input {
+    margin-top: 10px;
+  }
+
+  &__button {
+    margin-top: 10px;
+    background-color: #4CAF50;
+    border: none;
+    padding: 15px 32px;
+    font-size: 16px;
+  }
+}
