@@ -1,6 +1,6 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
-
+import PointForm from './PointForm';
 
 class Graph extends React.Component {
   constructor (props) {
@@ -11,23 +11,31 @@ class Graph extends React.Component {
       z: [1, 2, 3, 4, 5, 6, 7],
     }
   }
+
+  handleClick = (event) => {
+    console.log(event);
+  } 
+  
   render() {
+    const { x, y, z} = this.state;
     return (
       <div>
-        <Plot>
+        <Plot
         data={[
           {
-            x: [1, 2, 3, 4, 5, 6, 7],
-            y: [1, 2, 3, 4, 5, 6, 7],
-            z: [1, 2, 3, 4, 5, 6, 7],
+            x: x,
+            y: y,
+            z: z,
+            size: [8,9,10,11,12,13,15],
             type: 'scatter3d',
+            mode: 'markers',
             marker: {color: 'red'},
           },
-          {type: 'bar', x: [1, 2, 3], y: [2, 5, 3], z: [1, 2, 3]},
         ]}
-        layout={ {width: 320, height: 240, title: 'A Fancy Plot'} }
-        
-        </Plot>
+        layout={ {width: 1000, height: 1000, title: 'A Fancy Plot'} }
+        onClick={this.handleClick} 
+        />
+        <PointForm />
       </div>
     )
   }
