@@ -1,16 +1,35 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
+import _ from 'lodash';
+import continents from './points';
 import PointForm from './PointForm';
 
 class Graph extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {
-      x: [1, 2, 3, 4, 5, 6, 7],
-      y: [1, 2, 3, 4, 5, 6, 7],
-      z: [1, 2, 3, 4, 5, 6, 7],
-      isVisiblePointForm: false,
-    }
+
+    const data = _.map(continents, (continent, continentName) => {
+      const x = _.map(continent.countries, country => country.x);
+      const y = _.map(continent.countries, country => country.y);
+      const z = _.map(continent.countries, country => country.z);
+      const color = continent.color;
+      const opacity =  _.map(continent.countries, country => country.marker.opacity);
+      const size = _.map(continent.countries, country => country.marker.size);
+      const text = _.map(continent.countries, (country, countryName) => `${countryName}`);
+
+      return {
+        x,
+        y,
+        z,
+        type: 'scatter3d',
+        mode: 'markers',
+        text,
+        name: continentName,
+        marker: { color, size, opacity },
+      };
+    })
+
+    this.state = { data, isVisiblePointForm: false };
   }
 
   handleClick = (event) => {
@@ -24,28 +43,16 @@ class Graph extends React.Component {
   };
   
   render() {
-    debugger;
-    const { x, y, z, isVisiblePointForm} = this.state;
+    const { data, isVisiblePointForm } = this.state;
     return (
       <div className="graph-page">
-        <div className="graph-page__graph-container">
+        <div className="graph-page__graph-container"> 
           <Plot
-            data={[
-              {
-                x: x,
-                y: y,
-                z: z,
-                size: [8,9,10,11,12,13,15],
-                type: 'scatter3d',
-                mode: 'markers',
-                marker: {color: 'red'},
-              },
-            ]}
-            layout={ {width: 1000, height: 1000, title: 'A Fancy Plot'} }
-            onClick={this.handleClick} 
+            data={data}
+            layout={ {width: 1000, height: 800, title: 'A Fancy Plot'} }
+            onClick={this.handleClick}
           />
         </div>
-
         {isVisiblePointForm && <PointForm />}
       </div>
     )
