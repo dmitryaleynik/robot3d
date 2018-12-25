@@ -1,46 +1,90 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
-import _ from 'lodash';
-import continents from './points';
+import map from 'lodash/map';
+import get from 'lodash/get';
+import countries from './points';
 import PointForm from './PointForm';
+import getColor from '../helpers/getColor';
 
 class Graph extends React.Component {
   constructor (props) {
     super(props);
 
-    const data = _.map(continents, (continent, continentName) => {
-      const x = _.map(continent.countries, country => country.x);
-      const y = _.map(continent.countries, country => country.y);
-      const z = _.map(continent.countries, country => country.z);
-      const color = continent.color;
-      const opacity =  _.map(continent.countries, country => country.marker.opacity);
-      const size = _.map(continent.countries, country => country.marker.size);
-      const text = _.map(continent.countries, (country, countryName) => `${countryName}`);
+    const data = {
+      x: map(countries, country => country.x),
+      y: map(countries, country => country.y),
+      z: map(countries, country => country.z),
+      size: map(countries, country => country.marker.size),
+      text: map(countries, (country, countryName) => `${countryName}`),
+      type: 'scatter3d',
+      mode: 'markers',
+      marker: {
+        color: map(countries, country => getColor(country.continent)),
+        size: map(countries, country => country.marker.size),
+      },
+    };
 
-      return {
-        x,
-        y,
-        z,
-        type: 'scatter3d',
-        mode: 'markers',
-        text,
-        name: continentName,
-        marker: { color, size, opacity },
-      };
-    })
-
-    this.state = { data, isVisiblePointForm: false };
+    this.state = {
+      data: [data],
+      isVisiblePointForm: false,
+      selectedPointIndex: -1,
+    };
   }
 
   handleClick = (event) => {
     debugger;
-    const { isVisiblePointForm } = this.state
+    const pointIndex = get(event, 'points[0].pointNumber', null);
+    const { isVisiblePointForm, selectedPointIndex } = this.state
+
     if (!isVisiblePointForm) {
       this.setState({
         isVisiblePointForm: true,
       });
     }
+
+    if (pointIndex !== selectedPointIndex) {
+      this.setState({
+        selectedPointIndex: pointIndex,
+      })
+    }
   };
+
+  getUpdatePointArray(points, updatedPoint) {
+    const { selectedPointIndex } = this.state;
+    return points.map((point, index) => {
+      if (index === selectedPointIndex) {
+        return updatedPoint;
+      }
+      return point;
+    });
+  }
+
+  handleSubmit = (submitedData) => {
+    const {
+      selectedPointIndex,
+      data,
+    } = this.state;
+
+    const { 
+      x: xPoints,
+      y: yPoints,
+      z: zPoints,
+    } = data[0];
+
+    if (selectedPointIndex !== -1) {
+      const newData = {
+        ...data[0],
+        x: this.getUpdatePointArray(xPoints, submitedData.x),
+        y: this.getUpdatePointArray(yPoints, submitedData.y),
+        z: this.getUpdatePointArray(zPoints, submitedData.z),
+      }
+       this.setState({
+        data: [newData],
+        selectedPointIndex: -1,
+        isVisiblePointForm: false,
+      }); 
+    }
+  }
   
   render() {
     const { data, isVisiblePointForm } = this.state;
@@ -53,7 +97,7 @@ class Graph extends React.Component {
             onClick={this.handleClick}
           />
         </div>
-        {isVisiblePointForm && <PointForm />}
+        {isVisiblePointForm && <PointForm handleSubmit={this.handleSubmit}/>}
       </div>
     )
   }
