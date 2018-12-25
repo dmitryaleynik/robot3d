@@ -9,33 +9,44 @@ class Graph extends React.Component {
       x: [1, 2, 3, 4, 5, 6, 7],
       y: [1, 2, 3, 4, 5, 6, 7],
       z: [1, 2, 3, 4, 5, 6, 7],
+      isVisiblePointForm: false,
     }
   }
 
   handleClick = (event) => {
-    console.log(event);
-  } 
+    debugger;
+    const { isVisiblePointForm } = this.state
+    if (!isVisiblePointForm) {
+      this.setState({
+        isVisiblePointForm: true,
+      });
+    }
+  };
   
   render() {
-    const { x, y, z} = this.state;
+    debugger;
+    const { x, y, z, isVisiblePointForm} = this.state;
     return (
-      <div>
-        <Plot
-        data={[
-          {
-            x: x,
-            y: y,
-            z: z,
-            size: [8,9,10,11,12,13,15],
-            type: 'scatter3d',
-            mode: 'markers',
-            marker: {color: 'red'},
-          },
-        ]}
-        layout={ {width: 1000, height: 1000, title: 'A Fancy Plot'} }
-        onClick={this.handleClick} 
-        />
-        <PointForm />
+      <div className="graph-page">
+        <div className="graph-page__graph-container">
+          <Plot
+            data={[
+              {
+                x: x,
+                y: y,
+                z: z,
+                size: [8,9,10,11,12,13,15],
+                type: 'scatter3d',
+                mode: 'markers',
+                marker: {color: 'red'},
+              },
+            ]}
+            layout={ {width: 1000, height: 1000, title: 'A Fancy Plot'} }
+            onClick={this.handleClick} 
+          />
+        </div>
+
+        {isVisiblePointForm && <PointForm />}
       </div>
     )
   }
