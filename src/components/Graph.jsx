@@ -1,33 +1,42 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
-
+import _ from 'lodash';
+import continents from './points';
 
 class Graph extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {
-      x: [1, 2, 3, 4, 5, 6, 7],
-      y: [1, 2, 3, 4, 5, 6, 7],
-      z: [1, 2, 3, 4, 5, 6, 7],
-    }
+
+    const data = _.map(continents, (continent, continentName) => {
+      const x = _.map(continent.countries, country => country.x);
+      const y = _.map(continent.countries, country => country.y);
+      const z = _.map(continent.countries, country => country.z);
+      const color = continent.color;
+      const opacity =  _.map(continent.countries, country => country.marker.opacity);
+      const size = _.map(continent.countries, country => country.marker.size);
+      const text = _.map(continent.countries, (country, countryName) => `${countryName}`);
+
+      return {
+        x,
+        y,
+        z,
+        type: 'scatter3d',
+        mode: 'markers',
+        text,
+        name: continentName,
+        marker: { color, size, opacity },
+      };
+    })
+
+    this.state = { data };
   }
   render() {
     return (
       <div>
-        <Plot>
-        data={[
-          {
-            x: [1, 2, 3, 4, 5, 6, 7],
-            y: [1, 2, 3, 4, 5, 6, 7],
-            z: [1, 2, 3, 4, 5, 6, 7],
-            type: 'scatter3d',
-            marker: {color: 'red'},
-          },
-          {type: 'bar', x: [1, 2, 3], y: [2, 5, 3], z: [1, 2, 3]},
-        ]}
-        layout={ {width: 320, height: 240, title: 'A Fancy Plot'} }
-        
-        </Plot>
+        <Plot
+          data={this.state.data}
+          layout={ {width: 1000, height: 800, title: 'A Fancy Plot'} }
+        />
       </div>
     )
   }
