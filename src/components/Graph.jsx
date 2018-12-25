@@ -8,7 +8,18 @@ class Graph extends React.Component {
   constructor (props) {
     super(props);
 
-    const data = _.map(continents, (continent, continentName) => {
+    const data = this.formData(continents);
+    const fileReader = new FileReader();
+
+    this.state = {
+      data,
+      isVisiblePointForm: false,
+      fileReader,
+    };
+  }
+
+  formData = (continents) => {
+    return _.map(continents, (continent, continentName) => {
       const x = _.map(continent.countries, country => country.x);
       const y = _.map(continent.countries, country => country.y);
       const z = _.map(continent.countries, country => country.z);
@@ -27,13 +38,10 @@ class Graph extends React.Component {
         name: continentName,
         marker: { color, size, opacity },
       };
-    })
-
-    this.state = { data, isVisiblePointForm: false };
-  }
+    });
+  };
 
   handleClick = (event) => {
-    debugger;
     const { isVisiblePointForm } = this.state
     if (!isVisiblePointForm) {
       this.setState({
@@ -41,7 +49,19 @@ class Graph extends React.Component {
       });
     }
   };
-  
+
+  handleChange = (selectorFiles) => {
+    const pointsFile = selectorFiles[0];
+
+    this.state.fileReader.onloadend = (event) => {
+      const points = JSON.parse(this.state.fileReader.result);
+      const data = this.formData(points);
+      this.setState({ data });
+    }
+
+    this.state.fileReader.readAsText(pointsFile);
+  };
+
   render() {
     const { data, isVisiblePointForm } = this.state;
     return (
@@ -53,6 +73,11 @@ class Graph extends React.Component {
             onClick={this.handleClick}
           />
         </div>
+        <input
+          type="file"
+          accept="application/json"
+          onChange={ (e) => this.handleChange(e.target.files) }
+        />
         {isVisiblePointForm && <PointForm />}
       </div>
     )
