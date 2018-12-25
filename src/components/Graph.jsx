@@ -1,7 +1,7 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 import _ from 'lodash';
-import continents from './points';
+import continents from './continents.json';
 import PointForm from './PointForm';
 
 class Graph extends React.Component {
