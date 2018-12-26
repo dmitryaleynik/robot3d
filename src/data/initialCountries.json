@@ -1,62 +1,92 @@
 {
   "Morocco": {
-    "x": 1,
-    "y": 2,
-    "z": 3,
+    "x": 3,
+    "y": 0.4,
+    "z": 10,
     "marker": {
       "opacity": 0,
-      "size": 22
+      "size": 4
     },
     "continent": "Africa"
   },
   "Egypt": {
-    "x": 23,
-    "y": 20,
-    "z": 7,
+    "x": 15,
+    "y": 0.2,
+    "z": 6,
     "marker": {
       "opacity": 0.15,
-      "size": 10
+      "size": 9
     },
     "continent": "Africa"
   },
   "Thailand": {
-    "x": 11,
-    "y": 22,
-    "z": 33,
+    "x": 23,
+    "y": 0.3,
+    "z": 9,
     "marker": {
       "opacity": 0.1,
-      "size": 17
+      "size": 8
     },
     "continent": "Asia"
   },
   "India": {
-    "x": 15,
-    "y": 7,
-    "z": 24,
+    "x": 300,
+    "y": 0.1,
+    "z": 12,
     "marker": {
       "opacity": 0.9,
-      "size": 12
+      "size": 15
     },
     "continent": "Asia"
   },
   "Belarus": {
     "x": 10,
-    "y": 10,
-    "z": 30,
+    "y": 0.6,
+    "z": 10,
     "marker": {
       "opacity": 0.1,
-      "size": 16
+      "size": 10
     },
     "continent": "Europe"
   },
   "France": {
-    "x": 3,
-    "y": 0,
-    "z": 17,
+    "x": 30,
+    "y": 0.8,
+    "z": 14,
     "marker": {
       "opacity": 0.5,
-      "size": 20
+      "size": 15
     },
     "continent": "Europe"
+  },
+  "USA": {
+    "x": 150,
+    "y": 0.9,
+    "z": 19,
+    "marker": {
+      "opacity": 0.5,
+      "size": 22
+    },
+    "continent": "North America"
+  },
+  "Brazil": {
+    "x": 90,
+    "y": 0.6,
+    "z": 2,
+    "marker": {
+      "opacity": 0.5,
+      "size": 18
+    },
+    "continent": "South America"
+  },
+  "Australia": {
+    "x": 30,
+    "y": 0.5,
+    "z": 6,
+    "marker": {
+      "opacity": 0.5,
+      "size": 12
+    },
+    "continent": "Australia"
   }
 }

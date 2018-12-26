@@ -78,36 +78,15 @@ class Graph extends React.Component {
         mode: 'markers',
         text,
         name: continentName,
-        marker: { color, size },
+        marker: { color, size, symbol: "square" },
         hoverinfo: 'text',
-        hovertext: map(countries, (country, countryName) => {
-          return `<b>${countryName}</b><br><br>Population: ${country.x}<br>HDI: ${country.y}<br>GDP: $${country.z} million<br>Area: ${country.marker.size} km^2`;
+        hovertext: map(countryByCriteria, (country) => {
+          return `<b>${country.name}</b><br><br>Population: ${country.x}<br>HDI: ${country.y}<br>GDP: $${country.z} million<br>Area: ${country.marker.size} km^2`;
         }),
       };
 
     }); 
     return data;
-// =======
-//   formData = (countries) => {
-//     return [{
-//       x: map(countries, country => country.x),
-//       y: map(countries, country => country.y),
-//       z: map(countries, country => country.z),
-//       size: map(countries, country => country.marker.size),
-//       text: map(countries, (country, countryName) => `${countryName}`),
-//       type: 'scatter3d',
-//       mode: 'markers',
-//       marker: {
-//         color: map(countries, country => getColor(country.continent)),
-//         size: map(countries, country => country.marker.size),
-//         opacity: map(countries, country => country.marker.opacity),
-//       },
-//       hoverinfo: 'text',
-//       hovertext: map(countries, (country, countryName) => {
-//         return `<b>${countryName}</b><br><br>Population: ${country.x}<br>HDI: ${country.y}<br>GDP: $${country.z} million<br>Area: ${country.marker.size} km^2`;
-//       }),
-//     }];
-// >>>>>>> Stashed changes
   };
 
   formLayout = () => {
