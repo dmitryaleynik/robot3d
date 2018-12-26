@@ -1,29 +1,30 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
+import FileSaver from 'file-saver';
 import map from 'lodash/map';
 import get from 'lodash/get';
+import set from 'lodash/set';
 import initialCountries from './initialCountries.json';
 import PointForm from './PointForm';
 import getColor from '../helpers/getColor';
-import FileSaver from 'file-saver';
 
 class Graph extends React.Component {
   constructor (props) {
     super(props);
 
-    const data = this.formData(initialCountries);
+    const countries = initialCountries;
     const fileReader = new FileReader();
 
     this.state = {
-      data: [data],
+      countries,
       isVisiblePointForm: false,
-      selectedPointIndex: -1,
+      selectedPointText: null,
       fileReader,
     };
-  }
+  };
 
   formData = (countries) => {
-    return {
+    return [{
       x: map(countries, country => country.x),
       y: map(countries, country => country.y),
       z: map(countries, country => country.z),
@@ -35,21 +36,22 @@ class Graph extends React.Component {
         color: map(countries, country => getColor(country.continent)),
         size: map(countries, country => country.marker.size),
       },
-    };
+    }];
   };
 
   handleClick = (event) => {
-    const pointIndex = get(event, 'points[0].pointNumber', null);
-    const { isVisiblePointForm, selectedPointIndex } = this.state
+    console.log('event', event);
+    const pointText = get(event, 'points[0].text', null);
+    const { isVisiblePointForm, selectedPointText } = this.state;
     if (!isVisiblePointForm) {
       this.setState({
         isVisiblePointForm: true,
       });
     }
 
-    if (pointIndex !== selectedPointIndex) {
+    if (pointText !== selectedPointText) {
       this.setState({
-        selectedPointIndex: pointIndex,
+        selectedPointText: pointText,
       })
     }
   };
@@ -57,59 +59,46 @@ class Graph extends React.Component {
   handleChange = (selectorFiles) => {
     const pointsFile = selectorFiles[0];
 
-    this.state.fileReader.onloadend = (event) => {
+    this.state.fileReader.onloadend = () => {
       const points = JSON.parse(this.state.fileReader.result);
-      const data = this.formData(points);
-      this.setState({ data: [data] });
+      this.setState({ countries: points });
     }
 
     this.state.fileReader.readAsText(pointsFile);
   };
 
-  getUpdatePointArray(points, updatedPoint) {
-    const { selectedPointIndex } = this.state;
-    return points.map((point, index) => {
-      if (index === selectedPointIndex) {
-        return updatedPoint;
-      }
-      return point;
-    });
-  }
-
   handleSubmit = (submitedData) => {
     const {
-      selectedPointIndex,
-      data,
+      selectedPointText,
+      countries,
     } = this.state;
 
-    const { 
-      x: xPoints,
-      y: yPoints,
-      z: zPoints,
-    } = data[0];
+    const { x, y, z } = submitedData;
 
-    if (selectedPointIndex !== -1) {
-      const newData = {
-        ...data[0],
-        x: this.getUpdatePointArray(xPoints, submitedData.x),
-        y: this.getUpdatePointArray(yPoints, submitedData.y),
-        z: this.getUpdatePointArray(zPoints, submitedData.z),
-      }
-       this.setState({
-        data: [newData],
-        selectedPointIndex: -1,
+    if (selectedPointText !== null) {
+      const newCountry = {
+        ...get(countries, selectedPointText, {}),
+        x, y, z
+      };
+
+      set(countries, selectedPointText, newCountry);
+
+      this.setState({
+        countries,
+        selectedPointText: null,
         isVisiblePointForm: false,
       }); 
     }
-  }
+  };
 
   download = () => {
-    var blob = new Blob([JSON.stringify(this.state.data[0])], {type: "text/plain;charset=utf-8"});
-    FileSaver.saveAs(blob, "hello world.txt");
+    var blob = new Blob([JSON.stringify(this.state.countries)], {type: "application/json;charset=utf-8"});
+    FileSaver.saveAs(blob, "countries.json");
   };
 
   render() {
-    const { data, isVisiblePointForm } = this.state;
+    const { countries, isVisiblePointForm } = this.state;
+    const data = this.formData(countries);
     return (
       <div className="graph-page">
         <div className="graph-page__graph-container"> 
