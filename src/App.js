@@ -6,10 +6,10 @@ import Graph from './components/Graph';
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-            <Graph />
-        </header>
+      <div className="app">
+        <main className="main-container">
+          <Graph />
+        </main>
       </div>
     );
   }
