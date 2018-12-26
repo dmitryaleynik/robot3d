@@ -24,21 +24,65 @@ class Graph extends React.Component {
     };
   };
 
-  formData = (countries) => {
-    return [{
-      x: map(countries, country => country.x),
-      y: map(countries, country => country.y),
-      z: map(countries, country => country.z),
-      size: map(countries, country => country.marker.size),
-      text: map(countries, (country, countryName) => `${countryName}`),
-      type: 'scatter3d',
-      mode: 'markers',
-      marker: {
-        color: map(countries, country => getColor(country.continent)),
-        size: map(countries, country => country.marker.size),
-        opacity: map(countries, country => country.marker.opacity),
-      },
-    }];
+  getUniqueCriterias(countries, groupCriteria) {
+    debugger;
+    if (groupCriteria === undefined) {
+      return;
+    }
+    const criterias = {};
+
+    map(countries, country => {
+      const valueCriteria = country[groupCriteria];
+      criterias[valueCriteria] = 1;
+    });
+   
+    return Object.keys(criterias);
+  }
+
+  formData = (countries, groupCriteria = 'continent') => {
+    const groupCriterias = this.getUniqueCriterias(countries, groupCriteria);
+    let groupedByCriteria = {};
+    groupCriterias.forEach(criteriaValue => {
+      groupedByCriteria[criteriaValue] = Object.keys(countries).map(country => {
+        if (countries[country][groupCriteria] === criteriaValue) {
+          return {
+            ...countries[country],
+            name: country
+          }
+        }
+      });
+    });
+
+    const filteredGroupedByCriteria = {};
+
+    groupedByCriteria = map(groupedByCriteria, (criteria, continentName) => {
+      filteredGroupedByCriteria[continentName] = criteria.filter(country => country);
+      return undefined;
+    });
+
+    const data = map(filteredGroupedByCriteria, (countryByCriteria, continentName) => {
+      const x = countryByCriteria.map(country => country.x);
+      const y = countryByCriteria.map(country => country.y);
+      const z = countryByCriteria.map(country => country.z);
+
+      const color = countryByCriteria.map(country => getColor(country.continent));
+
+      const size = countryByCriteria.map(country => country.marker.size);
+      const text = countryByCriteria.map(country => country.name);
+      debugger;
+      return {
+        x,
+        y,
+        z,
+        type: 'scatter3d',
+        mode: 'markers',
+        text,
+        name: continentName,
+        marker: { color, size },
+      };
+
+    }); 
+    return data;
   };
 
   handleClick = (event) => {
@@ -94,7 +138,7 @@ class Graph extends React.Component {
   };
 
   download = () => {
-    var blob = new Blob([JSON.stringify(this.state.countries)], {type: "application/json;charset=utf-8"});
+    var blob = new Blob([JSON.stringify(this.state.countries,null, 2)], {type: "application/json;charset=utf-8"});
     FileSaver.saveAs(blob, "countries.json");
   };
 
