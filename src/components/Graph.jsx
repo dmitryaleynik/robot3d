@@ -2,7 +2,7 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 import map from 'lodash/map';
 import get from 'lodash/get';
-import countries from './points';
+import continents from './continents.json';
 import PointForm from './PointForm';
 import getColor from '../helpers/getColor';
 
@@ -10,7 +10,19 @@ class Graph extends React.Component {
   constructor (props) {
     super(props);
 
-    const data = {
+    const data = this.formData(continents);
+    const fileReader = new FileReader();
+
+    this.state = {
+      data: [data],
+      isVisiblePointForm: false,
+      selectedPointIndex: -1,
+      fileReader,
+    };
+  }
+
+  formData = (countries) => {
+    return {
       x: map(countries, country => country.x),
       y: map(countries, country => country.y),
       z: map(countries, country => country.z),
@@ -23,19 +35,11 @@ class Graph extends React.Component {
         size: map(countries, country => country.marker.size),
       },
     };
-
-    this.state = {
-      data: [data],
-      isVisiblePointForm: false,
-      selectedPointIndex: -1,
-    };
-  }
+  };
 
   handleClick = (event) => {
-    debugger;
     const pointIndex = get(event, 'points[0].pointNumber', null);
     const { isVisiblePointForm, selectedPointIndex } = this.state
-
     if (!isVisiblePointForm) {
       this.setState({
         isVisiblePointForm: true,
@@ -47,6 +51,18 @@ class Graph extends React.Component {
         selectedPointIndex: pointIndex,
       })
     }
+  };
+
+  handleChange = (selectorFiles) => {
+    const pointsFile = selectorFiles[0];
+
+    this.state.fileReader.onloadend = (event) => {
+      const points = JSON.parse(this.state.fileReader.result);
+      const data = this.formData(points);
+      this.setState({ data: [data] });
+    }
+
+    this.state.fileReader.readAsText(pointsFile);
   };
 
   getUpdatePointArray(points, updatedPoint) {
@@ -85,7 +101,7 @@ class Graph extends React.Component {
       }); 
     }
   }
-  
+
   render() {
     const { data, isVisiblePointForm } = this.state;
     return (
@@ -93,10 +109,15 @@ class Graph extends React.Component {
         <div className="graph-page__graph-container"> 
           <Plot
             data={data}
-            layout={ {width: 1000, height: 800, title: 'A Fancy Plot'} }
+            layout={ {width: 1000, height: 800, title: 'World Countries Statistics'} }
             onClick={this.handleClick}
           />
         </div>
+        <input
+          type="file"
+          accept="application/json"
+          onChange={ (e) => this.handleChange(e.target.files) }
+        />
         {isVisiblePointForm && <PointForm handleSubmit={this.handleSubmit}/>}
       </div>
     )
@@ -104,71 +125,3 @@ class Graph extends React.Component {
 };
 
 export default Graph;
-
-
-/* 
-
-Plotly.d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/3d-scatter.csv', function(err, rows){
-function unpack(rows, key) {
-	return rows.map(function(row)
-	{ return row[key]; });}
-
-var trace1 = {
-	x:unpack(rows, 'x1'), y: unpack(rows, 'y1'), z: unpack(rows, 'z1'),
-	mode: 'markers',
-	marker: {
-		size: 8,
-		line: {
-		color: 'rgba(217, 217, 217, 0.14)',
-		width: 0.5},
-		opacity: 0.8},
-	type: 'scatter3d'
-};
-debugger;
-let dots = Array(100).fill(null);
-console.log(dots);
-
-
-xx = [1,2,3,4,5,6,7,8];
-yy = [1,2,3,4,5,6,7,8];
-zz = [1,2,3,4,5,6,7,8];
-
-var trace2 = {
-	x:xx, y: yy, z: zz,
-	mode: 'markers',
-	marker: {
-		color: ['black', 'red','red','red','black','red'],
-		size: [10,11,12,13,14,15,16,17,18,19],
-		symbol: 'circle',
-		line: {
-		color: 'rgb(204, 204, 204)',
-		width: 1},
-		opacity: 0.8},
-  type: 'scatter3d'};
-  
-  trace1.x = trace1.x.slice(1,10);
-  trace1.y = trace1.y.slice(1,10);
-  trace1.z = trace1.z.slice(1,10);
-
-var data = [trace1, trace2];
-var layout = {
-  scene:{
-	 aspectmode: "manual",
-   aspectratio: {
-     x: 1, y: 0.7, z: 1,
-    },
-   xaxis: {
-    nticks: 1,
-    range: [0, 10],
-  },
-   yaxis: {
-    nticks: 1,
-    range: [0, 10],
-  },
-   zaxis: {
-   nticks: 1,
-   range: [0, 10],
-  }},
-};
-Plotly.newPlot('App', data, layout);
-}); */
