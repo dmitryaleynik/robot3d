@@ -5,6 +5,7 @@ import get from 'lodash/get';
 import countries from './points';
 import PointForm from './PointForm';
 import getColor from '../helpers/getColor';
+import FileSaver from 'file-saver';
 
 class Graph extends React.Component {
   constructor (props) {
@@ -85,7 +86,12 @@ class Graph extends React.Component {
       }); 
     }
   }
-  
+
+  download = () => {
+    var blob = new Blob([JSON.stringify(this.state.data[0])], {type: "text/plain;charset=utf-8"});
+    FileSaver.saveAs(blob, "hello world.txt");
+  };
+
   render() {
     const { data, isVisiblePointForm } = this.state;
     return (
@@ -98,6 +104,7 @@ class Graph extends React.Component {
           />
         </div>
         {isVisiblePointForm && <PointForm handleSubmit={this.handleSubmit}/>}
+        <div onClick={this.download}>download</div>
       </div>
     )
   }
