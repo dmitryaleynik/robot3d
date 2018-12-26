@@ -24,7 +24,7 @@ class Graph extends React.Component {
     };
   };
 
-// <<<<<<< Updated upstream
+
   getUniqueCriterias(countries, groupCriteria) {
     if (groupCriteria === undefined) {
       return;
@@ -69,6 +69,7 @@ class Graph extends React.Component {
 
       const size = countryByCriteria.map(country => country.marker.size);
       const text = countryByCriteria.map(country => country.name);
+      const shape = countryByCriteria.map(country => country.marker.nuclearWeapon ? 'square' : 'circle');
 
       return {
         x,
@@ -78,11 +79,11 @@ class Graph extends React.Component {
         mode: 'markers',
         text,
         name: continentName,
-        marker: { color, size, symbol: "square" },
+        marker: { color, size, symbol: shape },
         hoverinfo: 'text',
         hovertext: map(countryByCriteria, (country) => {
-          return `<b>${country.name}</b><br><br>Population: ${country.x}<br>HDI: ${country.y}<br>GDP: $${country.z} million<br>Area: ${country.marker.size} km^2`;
-        }),
+          return `<b>${country.name}</b><br><br>Population: ${country.x} <br>HDI: ${country.y}<br>GDP: $${country.z} million<br>Area: ${country.marker.size} km^2<br>NuclearWeapon: ${country.marker.nuclearWeapon}`;
+        }), 
       };
 
     }); 

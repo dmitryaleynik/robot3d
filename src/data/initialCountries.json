@@ -5,7 +5,8 @@
     "z": 10,
     "marker": {
       "opacity": 0,
-      "size": 4
+      "size": 4,
+      "nuclearWeapon": false
     },
     "continent": "Africa"
   },
@@ -15,7 +16,8 @@
     "z": 6,
     "marker": {
       "opacity": 0.15,
-      "size": 9
+      "size": 9,
+      "nuclearWeapon": false
     },
     "continent": "Africa"
   },
@@ -25,7 +27,8 @@
     "z": 9,
     "marker": {
       "opacity": 0.1,
-      "size": 8
+      "size": 8,
+      "nuclearWeapon": false
     },
     "continent": "Asia"
   },
@@ -35,7 +38,8 @@
     "z": 12,
     "marker": {
       "opacity": 0.9,
-      "size": 15
+      "size": 15,
+      "nuclearWeapon": true
     },
     "continent": "Asia"
   },
@@ -45,7 +49,8 @@
     "z": 10,
     "marker": {
       "opacity": 0.1,
-      "size": 10
+      "size": 10,
+      "nuclearWeapon": false
     },
     "continent": "Europe"
   },
@@ -55,7 +60,8 @@
     "z": 14,
     "marker": {
       "opacity": 0.5,
-      "size": 15
+      "size": 15,
+      "nuclearWeapon": true
     },
     "continent": "Europe"
   },
@@ -65,7 +71,8 @@
     "z": 19,
     "marker": {
       "opacity": 0.5,
-      "size": 22
+      "size": 22,
+      "nuclearWeapon": true
     },
     "continent": "North America"
   },
@@ -75,7 +82,8 @@
     "z": 2,
     "marker": {
       "opacity": 0.5,
-      "size": 18
+      "size": 18,
+      "nuclearWeapon": true
     },
     "continent": "South America"
   },
@@ -85,7 +93,8 @@
     "z": 6,
     "marker": {
       "opacity": 0.5,
-      "size": 12
+      "size": 21,
+      "nuclearWeapon": false
     },
     "continent": "Australia"
   }
