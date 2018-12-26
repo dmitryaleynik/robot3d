@@ -4,14 +4,38 @@
   align-items: center;
 
   &__graph-container {
-    padding: 50px 50px 0 50px;
+    padding: 20px 20px 0 20px;
   }
 
   &__buttons-container {
-    padding: 50px;
+    padding: 20px;
     min-width: 500px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
+}
+
+label {
+  padding: 10px;
+  background: red;
+  display: table;
+  cursor: pointer;
+  font-size: 20px;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+input[type="button"] {
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  background: orange;
+  font-size: 20px;
+  color: #fff;
+  font-family: sans-serif;
 }
