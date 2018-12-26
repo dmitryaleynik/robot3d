@@ -2,7 +2,7 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 import map from 'lodash/map';
 import get from 'lodash/get';
-import continents from './continents.json';
+import initialCountries from './initialCountries.json';
 import PointForm from './PointForm';
 import getColor from '../helpers/getColor';
 import FileSaver from 'file-saver';
@@ -11,7 +11,7 @@ class Graph extends React.Component {
   constructor (props) {
     super(props);
 
-    const data = this.formData(continents);
+    const data = this.formData(initialCountries);
     const fileReader = new FileReader();
 
     this.state = {
