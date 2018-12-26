@@ -4,9 +4,10 @@ import FileSaver from 'file-saver';
 import map from 'lodash/map';
 import get from 'lodash/get';
 import set from 'lodash/set';
-import initialCountries from './initialCountries.json';
 import PointForm from './PointForm';
+import initialCountries from '../data/initialCountries.json';
 import getColor from '../helpers/getColor';
+import '../styles/index.scss';
 
 class Graph extends React.Component {
   constructor (props) {
@@ -35,12 +36,13 @@ class Graph extends React.Component {
       marker: {
         color: map(countries, country => getColor(country.continent)),
         size: map(countries, country => country.marker.size),
+        opacity: map(countries, country => country.marker.opacity),
       },
     }];
   };
 
   handleClick = (event) => {
-    console.log('event', event);
+    console.log(event);
     const pointText = get(event, 'points[0].text', null);
     const { isVisiblePointForm, selectedPointText } = this.state;
     if (!isVisiblePointForm) {
@@ -101,20 +103,22 @@ class Graph extends React.Component {
     const data = this.formData(countries);
     return (
       <div className="graph-page">
-        <div className="graph-page__graph-container"> 
+        <div className="graph-page__graph-container">
+          <div className="graph-page__buttons-container">
+            <input
+              type="file"
+              accept="application/json"
+              onChange={ (e) => this.handleChange(e.target.files) }
+            />
+            <div onClick={this.download}>download</div>
+          </div>
           <Plot
             data={data}
-            layout={ {width: 1000, height: 800, title: 'World Countries Statistics'} }
+            layout={ {width: 1200, height: 600, title: 'World Countries Statistics 3D'} }
             onClick={this.handleClick}
           />
         </div>
-        <input
-          type="file"
-          accept="application/json"
-          onChange={ (e) => this.handleChange(e.target.files) }
-        />
         {isVisiblePointForm && <PointForm handleSubmit={this.handleSubmit}/>}
-        <div onClick={this.download}>download</div>
       </div>
     )
   }

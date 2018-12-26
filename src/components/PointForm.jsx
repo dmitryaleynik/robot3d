@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../styles/index.scss';
 
 class PointForm extends React.Component {
   state = {
