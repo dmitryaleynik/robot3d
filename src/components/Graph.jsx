@@ -69,7 +69,7 @@ class Graph extends React.Component {
 
       const size = countryByCriteria.map(country => country.marker.size);
       const text = countryByCriteria.map(country => country.name);
-      const shape = countryByCriteria.map(country => country.marker.nuclearWeapon ? 'square' : 'circle');
+      const symbol = countryByCriteria.map(country => country.marker.nuclearWeapon ? 'square' : 'circle');
 
       return {
         x,
@@ -79,10 +79,10 @@ class Graph extends React.Component {
         mode: 'markers',
         text,
         name: continentName,
-        marker: { color, size, symbol: shape },
+        marker: { color, size, symbol },
         hoverinfo: 'text',
         hovertext: map(countryByCriteria, (country) => {
-          return `<b>${country.name}</b><br><br>Population: ${country.x} <br>HDI: ${country.y}<br>GDP: $${country.z} million<br>Area: ${country.marker.size} km^2<br>NuclearWeapon: ${country.marker.nuclearWeapon}`;
+          return `<b>${country.name}</b><br><br>Population: ${country.x} million<br>HDI: ${country.y}<br>GDP: $${country.z} million<br>Area: ${country.marker.size} thousand sq km<br>Nuclear weapon: ${country.marker.nuclearWeapon}`;
         }), 
       };
 
@@ -100,7 +100,7 @@ class Graph extends React.Component {
           title: 'Population (x)',
         },
         yaxis: {
-          title: 'HDI (y)', // Human Development Index - Индек5с человеческого развития (ИЧР)
+          title: 'HDI (y)', // Human Development Index - Индекс человеческого развития (ИЧР)
         },
         zaxis: {
           title: 'GDP (z)', // Gross Domestic Product - Внутренний валовый продукт (ВВП)
@@ -110,7 +110,6 @@ class Graph extends React.Component {
   };
 
   handleClick = (event) => {
-    console.log(event);
     const pointText = get(event, 'points[0].text', null);
     const { isVisiblePointForm, selectedPointText } = this.state;
     if (!isVisiblePointForm) {
@@ -143,12 +142,19 @@ class Graph extends React.Component {
       countries,
     } = this.state;
 
-    const { x, y, z } = submitedData;
-
+    const { x, y, z, size, nuclearWeapon } = submitedData;
+console.log('nuclearWeapon', nuclearWeapon === 'true', nuclearWeapon, true);
     if (selectedPointText !== null) {
+      const oldCountry = get(countries, selectedPointText, {});
       const newCountry = {
-        ...get(countries, selectedPointText, {}),
-        x, y, z
+        x: x ? x : oldCountry.x,
+        y: y ? y : oldCountry.y,
+        z: z ? z : oldCountry.z,
+        marker: {
+          size: size ? size : oldCountry.marker.size,
+          nuclearWeapon: nuclearWeapon === 'true' ? true : nuclearWeapon === 'false' ? false : oldCountry.marker.nuclearWeapon,
+        },
+        continent: oldCountry.continent,
       };
 
       set(countries, selectedPointText, newCountry);

@@ -1,31 +1,31 @@
 {
-  "Morocco": {
-    "x": 1,
-    "y": 2,
-    "z": 3,
+  "Australia": {
+    "x": 30,
+    "y": 0.5,
+    "z": 6,
     "marker": {
-      "opacity": 0,
-      "size": 22
+      "size": 21,
+      "nuclearWeapon": false
     },
-    "continent": "Africa"
+    "continent": "Australia"
   },
-  "Egypt": {
-    "x": 23,
-    "y": 20,
-    "z": 7,
+  "Peru": {
+    "x": 90,
+    "y": 0.6,
+    "z": 2,
     "marker": {
-      "opacity": 0.15,
-      "size": 10
+      "size": 18,
+      "nuclearWeapon": true
     },
-    "continent": "Africa"
+    "continent": "South America"
   },
   "Belarus": {
     "x": 10,
-    "y": 10,
-    "z": 30,
+    "y": 0.6,
+    "z": 0.5,
     "marker": {
-      "opacity": 0.7,
-      "size": 16
+      "size": 10,
+      "nuclearWeapon": false
     },
     "continent": "Europe"
   }
