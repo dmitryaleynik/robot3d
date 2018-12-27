@@ -4,7 +4,6 @@
     "y": 0.4,
     "z": 10,
     "marker": {
-      "opacity": 0,
       "size": 4,
       "nuclearWeapon": false
     },
@@ -15,7 +14,6 @@
     "y": 0.2,
     "z": 6,
     "marker": {
-      "opacity": 0.15,
       "size": 9,
       "nuclearWeapon": false
     },
@@ -26,7 +24,6 @@
     "y": 0.3,
     "z": 9,
     "marker": {
-      "opacity": 0.1,
       "size": 8,
       "nuclearWeapon": false
     },
@@ -37,7 +34,6 @@
     "y": 0.1,
     "z": 12,
     "marker": {
-      "opacity": 0.9,
       "size": 15,
       "nuclearWeapon": true
     },
@@ -48,7 +44,6 @@
     "y": 0.6,
     "z": 10,
     "marker": {
-      "opacity": 0.1,
       "size": 10,
       "nuclearWeapon": false
     },
@@ -59,7 +54,6 @@
     "y": 0.8,
     "z": 14,
     "marker": {
-      "opacity": 0.5,
       "size": 15,
       "nuclearWeapon": true
     },
@@ -70,7 +64,6 @@
     "y": 0.9,
     "z": 19,
     "marker": {
-      "opacity": 0.5,
       "size": 22,
       "nuclearWeapon": true
     },
@@ -81,7 +74,6 @@
     "y": 0.6,
     "z": 2,
     "marker": {
-      "opacity": 0.5,
       "size": 18,
       "nuclearWeapon": true
     },
@@ -92,7 +84,6 @@
     "y": 0.5,
     "z": 6,
     "marker": {
-      "opacity": 0.5,
       "size": 21,
       "nuclearWeapon": false
     },
